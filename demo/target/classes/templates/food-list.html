@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Food Menu</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f8;
+            margin: 0;
+        }
+
+        header {
+            background: #ff5722;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .cart span {
+            background: white;
+            color: #ff5722;
+            padding: 4px 10px;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .price {
+            color: #ff5722;
+            font-weight: bold;
+        }
+
+        button {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 5px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h2>🍽 Food Menu</h2>
+    <div class="cart">
+        <a href="/cart" style="color:white;text-decoration:none;">
+            🛒 Cart <span id="cart-count">0</span>
+        </a>
+    </div>
+</header>
+
+<div class="container">
+
+    <div class="card">
+<!--        <img src="https://images.unsplash.com/photo-1550547660-d9450f859349">-->
+        <h3>Burger</h3>
+        <p class="price">₹120</p>
+        <button onclick="addToCart('Burger',120)">Add</button>
+    </div>
+
+    <div class="card">
+<!--        <img src="https://images.unsplash.com/photo-1548365328-5bdb0b6b7d3b">-->
+        <h3>Pizza</h3>
+        <p class="price">₹250</p>
+        <button onclick="addToCart('Pizza',250)">Add</button>
+    </div>
+
+    <div class="card">
+<!--        <img src="https://images.unsplash.com/photo-1600628422019-4b8b1c9f1c88">-->
+        <h3>Biryani</h3>
+        <p class="price">₹180</p>
+        <button onclick="addToCart('Biryani',180)">Add</button>
+    </div>
+
+</div>
+
+<script>
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    function addToCart(name, price) {
+        let item = cart.find(i => i.name === name);
+
+        if (item) {
+            item.qty++;
+        } else {
+            cart.push({ name, price, qty: 1 });
+        }
+
+        localStorage.setItem("cart", JSON.stringify(cart));
+        updateCount();
+    }
+
+    function updateCount() {
+        let count = cart.reduce((sum, i) => sum + i.qty, 0);
+        document.getElementById("cart-count").innerText = count;
+    }
+
+    updateCount();
+</script>
+
+</body>
+</html>

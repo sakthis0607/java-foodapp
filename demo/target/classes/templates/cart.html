@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Your Cart</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #f4f6f8;
+            padding: 20px;
+        }
+
+        .item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
+
+        button {
+            background: #ff5722;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 10px;
+            margin: 0 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+<h2>🛒 Cart Items</h2>
+
+<div id="cart-items"></div>
+
+<h3>Total: ₹<span id="total">0</span></h3>
+
+<a href="/foods">⬅ Back to Menu</a>
+
+<script>
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    let container = document.getElementById("cart-items");
+    let total = 0;
+
+    function render() {
+        container.innerHTML = "";
+        total = 0;
+
+        cart.forEach((item, index) => {
+            total += item.price * item.qty;
+
+            container.innerHTML += `
+                <div class="item">
+                    <b>${item.name}</b> - ₹${item.price} × ${item.qty}
+                    <br>
+                    <button onclick="changeQty(${index},1)">+</button>
+                    <button onclick="changeQty(${index},-1)">-</button>
+                </div>
+            `;
+        });
+
+        document.getElementById("total").innerText = total;
+        localStorage.setItem("cart", JSON.stringify(cart));
+    }
+
+    function changeQty(index, delta) {
+        cart[index].qty += delta;
+        if (cart[index].qty <= 0) {
+            cart.splice(index, 1);
+        }
+        render();
+    }
+
+    render();
+</script>
+
+</body>
+</html>
